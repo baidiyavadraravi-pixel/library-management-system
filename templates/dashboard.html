@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Library Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="navbar">
+    <h1>📚 Library Management System</h1>
+    <div>
+      <span style="margin-right:10px;">Welcome, {{ session['username'] }}</span>
+      <a href="{{ url_for('add_book') }}">+ Add Book</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3>{{ total_books }}</h3>
+        <p>Total Titles</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{ total_quantity }}</h3>
+        <p>Total Copies</p>
+      </div>
+    </div>
+
+    <div class="dashboard-top">
+      <h2>Books</h2>
+      <form class="search-box" method="GET" action="{{ url_for('dashboard') }}">
+        <input type="text" name="q" placeholder="Search by title or author" value="{{ search_query or '' }}">
+        <button type="submit" class="btn">Search</button>
+      </form>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Category</th>
+          <th>Qty</th>
+          <th>Available</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr>
+          <td>{{ book['id'] }}</td>
+          <td>{{ book['title'] }}</td>
+          <td>{{ book['author'] }}</td>
+          <td>{{ book['isbn'] }}</td>
+          <td>{{ book['category'] }}</td>
+          <td>{{ book['quantity'] }}</td>
+          <td>{{ book['available'] }}</td>
+          <td class="actions">
+            <a class="btn btn-edit" href="{{ url_for('edit_book', book_id=book['id']) }}">Edit</a>
+            <a class="btn btn-danger" href="{{ url_for('delete_book', book_id=book['id']) }}"
+               onclick="return confirm('Delete this book?');">Delete</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="8" class="empty-row">No books found. Click "+ Add Book" to get started.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
