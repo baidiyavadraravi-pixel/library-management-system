@@ -1,5 +1,9 @@
 # Library Management System
 
+## 🚀 Live Website
+
+[![Live Website](https://img.shields.io/badge/Live%20Website-Open%20Project-success?style=for-the-badge)](https://library-management-system-fgaw.onrender.com)
+
 A simple **Library Management System** web application built with **Python (Flask)** and **SQLite**, featuring a login page and full **CRUD** (Create, Read, Update, Delete) operations on books.
 
 ## Features
